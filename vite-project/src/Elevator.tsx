@@ -1,13 +1,17 @@
 import styled from "styled-components";
 
+const ELEVATOR_HEIGHT = 30;
+
 interface ElevatorProps {
   currentFloor: number;
+  targetFloor: number | null;
 }
 
-export const Elevator = ({ currentFloor }: ElevatorProps) => {
+export const Elevator = ({ currentFloor, targetFloor }: ElevatorProps) => {
+  const moving = targetFloor !== null;
   return (
     <StyledContainer>
-      <StyledElevator $currentFloor={currentFloor}>
+      <StyledElevator $moving={moving} $currentFloor={currentFloor}>
         {currentFloor}층
       </StyledElevator>
     </StyledContainer>
@@ -26,13 +30,14 @@ const StyledContainer = styled.div`
   position: relative;
 `;
 
-const StyledElevator = styled.div<{ $currentFloor: number }>`
-  height: 30px;
+const StyledElevator = styled.div<{ $moving: boolean; $currentFloor: number }>`
+  height: ${ELEVATOR_HEIGHT}px;
   width: 100%;
-  border: 1px solid black;
   text-align: center;
   align-content: center;
   position: absolute;
-  bottom: ${(props) => (props.$currentFloor - 1) * 30}px;
+  border: ${(props) => (props.$moving ? "1px solid red" : "1px solid black;")};
+  color: ${(props) => (props.$moving ? "red" : "black")};
+  bottom: ${(props) => (props.$currentFloor - 1) * ELEVATOR_HEIGHT}px;
   transition: bottom 1s ease-in-out;
 `;

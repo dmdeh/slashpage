@@ -19,7 +19,6 @@ function App() {
     const interval = setInterval(() => {
       setElevators((prevElevators) => {
         const { currentFloor } = prevElevators[index];
-
         if (currentFloor === floor) {
           clearInterval(interval);
           return prevElevators.map((e, i) =>
@@ -28,7 +27,7 @@ function App() {
         }
 
         const direction = currentFloor < floor ? 1 : -1;
-        
+
         return prevElevators.map((e, i) =>
           i === index ? { ...e, currentFloor: currentFloor + direction } : e
         );
@@ -59,8 +58,12 @@ function App() {
         allElevatorsInUse={allElevatorsInUse}
       />
       <StyledElevators>
-        {elevators.map(({ currentFloor }, index) => (
-          <Elevator key={index} currentFloor={currentFloor} />
+        {elevators.map(({ currentFloor, targetFloor }, index) => (
+          <Elevator
+            key={index}
+            currentFloor={currentFloor}
+            targetFloor={targetFloor}
+          />
         ))}
       </StyledElevators>
     </Wrap>
@@ -69,6 +72,7 @@ function App() {
 
 const Wrap = styled.div`
   min-width: 650px;
+  padding: 10vh;
 `;
 
 const StyledElevators = styled.div`
