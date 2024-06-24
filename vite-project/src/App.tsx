@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { Elevator } from "./Elevator";
-import FloorButtons from "./FloorButton";
+import FloorButtons from "./FloorButtons";
 
 interface ElevatorState {
   currentFloor: number;

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+
 interface FloorButtonsProps {
   handleButtonClick: (floor: number) => void;
   allElevatorsInUse: boolean;
