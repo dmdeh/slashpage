@@ -1,12 +1,23 @@
 import styled from "styled-components";
 
-const FloorButtons = () => {
+interface FloorButtonsProps {
+  handleButtonClick: (floor: number) => void;
+  allElevatorsInUse: boolean;
+}
+
+const FloorButtons = ({ handleButtonClick, allElevatorsInUse }: FloorButtonsProps) => {
   return (
     <StyledContainer>
       <div>호출</div>
       <StyledButtons>
         {[...Array(15)].map((_, index) => (
-          <Button key={index}>{index + 1}</Button>
+          <Button
+            key={index}
+            onClick={() => handleButtonClick(index + 1)}
+            disabled={allElevatorsInUse}
+          >
+            {index + 1}
+          </Button>
         ))}
       </StyledButtons>
     </StyledContainer>
@@ -34,8 +45,8 @@ const Button = styled.button`
   border: none;
   border-right: 1px solid lightgray;
   &:disabled {
-    background-color: grey;
-    color: unset;
+    background-color: lightgrey;
+    color: red;
     cursor: not-allowed;
   }
 `;
