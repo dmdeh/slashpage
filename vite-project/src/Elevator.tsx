@@ -18,6 +18,7 @@ const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  align-items: center;
   border: 1px solid #000;
   width: 50px;
   height: 450px;

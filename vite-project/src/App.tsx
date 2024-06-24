@@ -15,40 +15,63 @@ function App() {
     { currentFloor: 1, targetFloor: null },
   ]);
 
+  const moveElevator = (index: number, floor: number) => {
+    const interval = setInterval(() => {
+      setElevators((prevElevators) => {
+        const { currentFloor } = prevElevators[index];
+
+        if (currentFloor === floor) {
+          clearInterval(interval);
+          return prevElevators.map((e, i) =>
+            i === index ? { ...e, targetFloor: null } : e
+          );
+        }
+
+        const direction = currentFloor < floor ? 1 : -1;
+        
+        return prevElevators.map((e, i) =>
+          i === index ? { ...e, currentFloor: currentFloor + direction } : e
+        );
+      });
+    }, 1000);
+  };
+
   const handleButtonClick = (floor: number) => {
     const availableElevator = elevators.findIndex(
       (e) => e.targetFloor === null
     );
 
     if (availableElevator !== -1) {
-      const newElevators = [...elevators];
-      newElevators[availableElevator] = {
-        ...newElevators[availableElevator],
-        targetFloor: floor,
-      };
+      const newElevators = elevators.map((e, index) =>
+        index === availableElevator ? { ...e, targetFloor: floor } : e
+      );
       setElevators(newElevators);
-      console.log("🚀 ~ handleButtonClick ~ newElevators:", newElevators);
+      moveElevator(availableElevator, floor);
     }
   };
 
   const allElevatorsInUse = elevators.every((e) => e.targetFloor !== null);
 
   return (
-    <>
+    <Wrap>
       <FloorButtons
         handleButtonClick={handleButtonClick}
         allElevatorsInUse={allElevatorsInUse}
       />
-      <Wrap>
-        {elevators.map((elevator, index) => (
-          <Elevator key={index} currentFloor={elevator.currentFloor} />
+      <StyledElevators>
+        {elevators.map(({ currentFloor }, index) => (
+          <Elevator key={index} currentFloor={currentFloor} />
         ))}
-      </Wrap>
-    </>
+      </StyledElevators>
+    </Wrap>
   );
 }
 
 const Wrap = styled.div`
+  min-width: 650px;
+`;
+
+const StyledElevators = styled.div`
   display: flex;
   justify-content: center;
 `;
